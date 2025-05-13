@@ -1,0 +1,1048 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1500,
+  "model": {
+    "culture": "en-US",
+    "dataSources": [
+      {
+        "type": "structured",
+        "name": "SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW",
+        "connectionDetails": {
+          "protocol": "tds",
+          "address": {
+            "server": "LENOVOMATEJ\\DOWSQL2022",
+            "database": "WideWorldImportersDW"
+          },
+          "authentication": null,
+          "query": null
+        },
+        "credential": {
+          "AuthenticationKind": "ServiceAccount",
+          "kind": "SQL",
+          "path": "lenovomatej\\dowsql2022;WideWorldImportersDW",
+          "EncryptConnection": false
+        }
+      }
+    ],
+    "tables": [
+      {
+        "name": "City",
+        "columns": [
+          {
+            "name": "City Key",
+            "dataType": "int64",
+            "sourceColumn": "City Key"
+          },
+          {
+            "name": "WWI City ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI City ID"
+          },
+          {
+            "name": "City",
+            "dataType": "string",
+            "sourceColumn": "City"
+          },
+          {
+            "name": "State Province",
+            "dataType": "string",
+            "sourceColumn": "State Province"
+          },
+          {
+            "name": "Country",
+            "dataType": "string",
+            "sourceColumn": "Country"
+          },
+          {
+            "name": "Continent",
+            "dataType": "string",
+            "sourceColumn": "Continent"
+          },
+          {
+            "name": "Sales Territory",
+            "dataType": "string",
+            "sourceColumn": "Sales Territory"
+          },
+          {
+            "name": "Region",
+            "dataType": "string",
+            "sourceColumn": "Region"
+          },
+          {
+            "name": "Subregion",
+            "dataType": "string",
+            "sourceColumn": "Subregion"
+          },
+          {
+            "name": "Location",
+            "dataType": "string",
+            "sourceColumn": "Location"
+          },
+          {
+            "name": "Latest Recorded Population",
+            "dataType": "int64",
+            "sourceColumn": "Latest Recorded Population"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    Cube_City = Source{[Schema=\"Cube\",Item=\"City\"]}[Data]",
+                "in",
+                "    Cube_City"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Customer",
+        "columns": [
+          {
+            "name": "Customer Key",
+            "dataType": "int64",
+            "sourceColumn": "Customer Key"
+          },
+          {
+            "name": "WWI Customer ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Customer ID"
+          },
+          {
+            "name": "Customer",
+            "dataType": "string",
+            "sourceColumn": "Customer"
+          },
+          {
+            "name": "Bill To Customer",
+            "dataType": "string",
+            "sourceColumn": "Bill To Customer"
+          },
+          {
+            "name": "Category",
+            "dataType": "string",
+            "sourceColumn": "Category"
+          },
+          {
+            "name": "Buying Group",
+            "dataType": "string",
+            "sourceColumn": "Buying Group"
+          },
+          {
+            "name": "Primary Contact",
+            "dataType": "string",
+            "sourceColumn": "Primary Contact"
+          },
+          {
+            "name": "Postal Code",
+            "dataType": "string",
+            "sourceColumn": "Postal Code"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    Cube_Customer = Source{[Schema=\"Cube\",Item=\"Customer\"]}[Data]",
+                "in",
+                "    Cube_Customer"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Date",
+        "columns": [
+          {
+            "name": "Date",
+            "dataType": "dateTime",
+            "sourceColumn": "Date"
+          },
+          {
+            "name": "Day Number",
+            "dataType": "int64",
+            "sourceColumn": "Day Number"
+          },
+          {
+            "name": "Day",
+            "dataType": "string",
+            "sourceColumn": "Day"
+          },
+          {
+            "name": "Month",
+            "dataType": "string",
+            "sourceColumn": "Month"
+          },
+          {
+            "name": "Short Month",
+            "dataType": "string",
+            "sourceColumn": "Short Month"
+          },
+          {
+            "name": "Calendar Month Number",
+            "dataType": "int64",
+            "sourceColumn": "Calendar Month Number"
+          },
+          {
+            "name": "Calendar Month Label",
+            "dataType": "string",
+            "sourceColumn": "Calendar Month Label"
+          },
+          {
+            "name": "Calendar Year",
+            "dataType": "int64",
+            "sourceColumn": "Calendar Year"
+          },
+          {
+            "name": "Calendar Year Label",
+            "dataType": "string",
+            "sourceColumn": "Calendar Year Label"
+          },
+          {
+            "name": "Fiscal Month Number",
+            "dataType": "int64",
+            "sourceColumn": "Fiscal Month Number"
+          },
+          {
+            "name": "Fiscal Month Label",
+            "dataType": "string",
+            "sourceColumn": "Fiscal Month Label"
+          },
+          {
+            "name": "Fiscal Year",
+            "dataType": "int64",
+            "sourceColumn": "Fiscal Year"
+          },
+          {
+            "name": "Fiscal Year Label",
+            "dataType": "string",
+            "sourceColumn": "Fiscal Year Label"
+          },
+          {
+            "name": "ISO Week Number",
+            "dataType": "int64",
+            "sourceColumn": "ISO Week Number"
+          },
+          {
+            "name": "Today",
+            "dataType": "int64",
+            "sourceColumn": "Today"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    Cube_Date = Source{[Schema=\"Cube\",Item=\"Date\"]}[Data]",
+                "in",
+                "    Cube_Date"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Invoice",
+        "columns": [
+          {
+            "name": "WWI Invoice ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Invoice ID"
+          },
+          {
+            "name": "Invoice Date Key",
+            "dataType": "dateTime",
+            "sourceColumn": "Invoice Date Key"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    Cube_Invoice = Source{[Schema=\"Cube\",Item=\"Invoice\"]}[Data]",
+                "in",
+                "    Cube_Invoice"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Invoice Sales",
+        "columns": [
+          {
+            "name": "WWI Invoice ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Invoice ID"
+          },
+          {
+            "name": "City Key",
+            "dataType": "int64",
+            "sourceColumn": "City Key"
+          },
+          {
+            "name": "WWI City ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI City ID"
+          },
+          {
+            "name": "Customer Key",
+            "dataType": "int64",
+            "sourceColumn": "Customer Key"
+          },
+          {
+            "name": "WWI Customer ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Customer ID"
+          },
+          {
+            "name": "Bill To Customer Key",
+            "dataType": "int64",
+            "sourceColumn": "Bill To Customer Key"
+          },
+          {
+            "name": "WWI Bill To Customer ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Bill To Customer ID"
+          },
+          {
+            "name": "Invoice Date Key",
+            "dataType": "dateTime",
+            "sourceColumn": "Invoice Date Key"
+          },
+          {
+            "name": "Salesperson Key",
+            "dataType": "int64",
+            "sourceColumn": "Salesperson Key"
+          },
+          {
+            "name": "WWI Employee ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Employee ID"
+          },
+          {
+            "name": "Invoice Total Excluding Tax",
+            "dataType": "double",
+            "sourceColumn": "Invoice Total Excluding Tax"
+          },
+          {
+            "name": "Invoice Tax Amount",
+            "dataType": "double",
+            "sourceColumn": "Invoice Tax Amount"
+          },
+          {
+            "name": "Invoice Profit",
+            "dataType": "double",
+            "sourceColumn": "Invoice Profit"
+          },
+          {
+            "name": "Invoice Total Including Tax",
+            "dataType": "double",
+            "sourceColumn": "Invoice Total Including Tax"
+          },
+          {
+            "name": "Invoice Total Dry Items",
+            "dataType": "int64",
+            "sourceColumn": "Invoice Total Dry Items"
+          },
+          {
+            "name": "Invoice Total Chiller Items",
+            "dataType": "int64",
+            "sourceColumn": "Invoice Total Chiller Items"
+          },
+          {
+            "name": "Invoice Count",
+            "dataType": "int64",
+            "sourceColumn": "Invoice Count"
+          },
+          {
+            "name": "Sales Count",
+            "dataType": "int64",
+            "sourceColumn": "Sales Count"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    #\"Cube_Invoice Sales\" = Source{[Schema=\"Cube\",Item=\"Invoice Sales\"]}[Data]",
+                "in",
+                "    #\"Cube_Invoice Sales\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Item",
+        "columns": [
+          {
+            "name": "Stock Item Key",
+            "dataType": "int64",
+            "sourceColumn": "Stock Item Key"
+          },
+          {
+            "name": "WWI Stock Item ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Stock Item ID"
+          },
+          {
+            "name": "Stock Item",
+            "dataType": "string",
+            "sourceColumn": "Stock Item"
+          },
+          {
+            "name": "Color",
+            "dataType": "string",
+            "sourceColumn": "Color"
+          },
+          {
+            "name": "Selling Package",
+            "dataType": "string",
+            "sourceColumn": "Selling Package"
+          },
+          {
+            "name": "Buying Package",
+            "dataType": "string",
+            "sourceColumn": "Buying Package"
+          },
+          {
+            "name": "Brand",
+            "dataType": "string",
+            "sourceColumn": "Brand"
+          },
+          {
+            "name": "Size",
+            "dataType": "string",
+            "sourceColumn": "Size"
+          },
+          {
+            "name": "Lead Time Days",
+            "dataType": "int64",
+            "sourceColumn": "Lead Time Days"
+          },
+          {
+            "name": "Quantity Per Outer",
+            "dataType": "int64",
+            "sourceColumn": "Quantity Per Outer"
+          },
+          {
+            "name": "Is Chiller Stock",
+            "dataType": "boolean",
+            "sourceColumn": "Is Chiller Stock"
+          },
+          {
+            "name": "Barcode",
+            "dataType": "string",
+            "sourceColumn": "Barcode"
+          },
+          {
+            "name": "Tax Rate",
+            "dataType": "double",
+            "sourceColumn": "Tax Rate"
+          },
+          {
+            "name": "Unit Price",
+            "dataType": "double",
+            "sourceColumn": "Unit Price"
+          },
+          {
+            "name": "Recommended Retail Price",
+            "dataType": "double",
+            "sourceColumn": "Recommended Retail Price"
+          },
+          {
+            "name": "Typical Weight Per Unit",
+            "dataType": "double",
+            "sourceColumn": "Typical Weight Per Unit"
+          },
+          {
+            "name": "Valid From",
+            "dataType": "dateTime",
+            "sourceColumn": "Valid From"
+          },
+          {
+            "name": "Valid To",
+            "dataType": "dateTime",
+            "sourceColumn": "Valid To"
+          },
+          {
+            "name": "Current",
+            "dataType": "int64",
+            "sourceColumn": "Current"
+          },
+          {
+            "name": "Lineage Key",
+            "dataType": "int64",
+            "sourceColumn": "Lineage Key"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    Cube_Item = Source{[Schema=\"Cube\",Item=\"Item\"]}[Data]",
+                "in",
+                "    Cube_Item"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Item-Current",
+        "columns": [
+          {
+            "name": "WWI Stock Item ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Stock Item ID"
+          },
+          {
+            "name": "Stock Item",
+            "dataType": "string",
+            "sourceColumn": "Stock Item"
+          },
+          {
+            "name": "Color",
+            "dataType": "string",
+            "sourceColumn": "Color"
+          },
+          {
+            "name": "Selling Package",
+            "dataType": "string",
+            "sourceColumn": "Selling Package"
+          },
+          {
+            "name": "Buying Package",
+            "dataType": "string",
+            "sourceColumn": "Buying Package"
+          },
+          {
+            "name": "Brand",
+            "dataType": "string",
+            "sourceColumn": "Brand"
+          },
+          {
+            "name": "Size",
+            "dataType": "string",
+            "sourceColumn": "Size"
+          },
+          {
+            "name": "Lead Time Days",
+            "dataType": "int64",
+            "sourceColumn": "Lead Time Days"
+          },
+          {
+            "name": "Quantity Per Outer",
+            "dataType": "int64",
+            "sourceColumn": "Quantity Per Outer"
+          },
+          {
+            "name": "Is Chiller Stock",
+            "dataType": "boolean",
+            "sourceColumn": "Is Chiller Stock"
+          },
+          {
+            "name": "Barcode",
+            "dataType": "string",
+            "sourceColumn": "Barcode"
+          },
+          {
+            "name": "Tax Rate",
+            "dataType": "double",
+            "sourceColumn": "Tax Rate"
+          },
+          {
+            "name": "Unit Price",
+            "dataType": "double",
+            "sourceColumn": "Unit Price"
+          },
+          {
+            "name": "Recommended Retail Price",
+            "dataType": "double",
+            "sourceColumn": "Recommended Retail Price"
+          },
+          {
+            "name": "Typical Weight Per Unit",
+            "dataType": "double",
+            "sourceColumn": "Typical Weight Per Unit"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    #\"Cube_Item-Current\" = Source{[Schema=\"Cube\",Item=\"Item-Current\"]}[Data]",
+                "in",
+                "    #\"Cube_Item-Current\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Sales",
+        "columns": [
+          {
+            "name": "Sale Key",
+            "dataType": "int64",
+            "sourceColumn": "Sale Key"
+          },
+          {
+            "name": "City Key",
+            "dataType": "int64",
+            "sourceColumn": "City Key"
+          },
+          {
+            "name": "WWI City ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI City ID"
+          },
+          {
+            "name": "Customer Key",
+            "dataType": "int64",
+            "sourceColumn": "Customer Key"
+          },
+          {
+            "name": "WWI Customer ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Customer ID"
+          },
+          {
+            "name": "Bill To Customer Key",
+            "dataType": "int64",
+            "sourceColumn": "Bill To Customer Key"
+          },
+          {
+            "name": "WWI Bill To Customer ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Bill To Customer ID"
+          },
+          {
+            "name": "Stock Item Key",
+            "dataType": "int64",
+            "sourceColumn": "Stock Item Key"
+          },
+          {
+            "name": "WWI Stock Item ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Stock Item ID"
+          },
+          {
+            "name": "Invoice Date Key",
+            "dataType": "dateTime",
+            "sourceColumn": "Invoice Date Key"
+          },
+          {
+            "name": "Delivery Date Key",
+            "dataType": "dateTime",
+            "sourceColumn": "Delivery Date Key"
+          },
+          {
+            "name": "Salesperson Key",
+            "dataType": "int64",
+            "sourceColumn": "Salesperson Key"
+          },
+          {
+            "name": "WWI Employee ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Employee ID"
+          },
+          {
+            "name": "WWI Invoice ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Invoice ID"
+          },
+          {
+            "name": "Description",
+            "dataType": "string",
+            "sourceColumn": "Description"
+          },
+          {
+            "name": "Package",
+            "dataType": "string",
+            "sourceColumn": "Package"
+          },
+          {
+            "name": "Quantity",
+            "dataType": "int64",
+            "sourceColumn": "Quantity"
+          },
+          {
+            "name": "Unit Price",
+            "dataType": "double",
+            "sourceColumn": "Unit Price"
+          },
+          {
+            "name": "Tax Rate",
+            "dataType": "double",
+            "sourceColumn": "Tax Rate"
+          },
+          {
+            "name": "Total Excluding Tax",
+            "dataType": "double",
+            "sourceColumn": "Total Excluding Tax"
+          },
+          {
+            "name": "Tax Amount",
+            "dataType": "double",
+            "sourceColumn": "Tax Amount"
+          },
+          {
+            "name": "Profit",
+            "dataType": "double",
+            "sourceColumn": "Profit"
+          },
+          {
+            "name": "Total Including Tax",
+            "dataType": "double",
+            "sourceColumn": "Total Including Tax"
+          },
+          {
+            "name": "Total Dry Items",
+            "dataType": "int64",
+            "sourceColumn": "Total Dry Items"
+          },
+          {
+            "name": "Total Chiller Items",
+            "dataType": "int64",
+            "sourceColumn": "Total Chiller Items"
+          },
+          {
+            "name": "Sales Count",
+            "dataType": "int64",
+            "sourceColumn": "Sales Count"
+          },
+          {
+            "name": "Lineage Key",
+            "dataType": "int64",
+            "sourceColumn": "Lineage Key"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    Cube_Sales = Source{[Schema=\"Cube\",Item=\"Sales\"]}[Data]",
+                "in",
+                "    Cube_Sales"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Salesperson",
+        "columns": [
+          {
+            "name": "Employee Key",
+            "dataType": "int64",
+            "sourceColumn": "Employee Key"
+          },
+          {
+            "name": "WWI Employee ID",
+            "dataType": "int64",
+            "sourceColumn": "WWI Employee ID"
+          },
+          {
+            "name": "Employee",
+            "dataType": "string",
+            "sourceColumn": "Employee"
+          },
+          {
+            "name": "Preferred Name",
+            "dataType": "string",
+            "sourceColumn": "Preferred Name"
+          },
+          {
+            "name": "Last Name",
+            "dataType": "string",
+            "sourceColumn": "Last Name"
+          },
+          {
+            "name": "First Name",
+            "dataType": "string",
+            "sourceColumn": "First Name"
+          },
+          {
+            "name": "Valid From",
+            "dataType": "dateTime",
+            "sourceColumn": "Valid From"
+          },
+          {
+            "name": "Valid To",
+            "dataType": "dateTime",
+            "sourceColumn": "Valid To"
+          },
+          {
+            "name": "Current",
+            "dataType": "int64",
+            "sourceColumn": "Current"
+          },
+          {
+            "name": "Lineage Key",
+            "dataType": "int64",
+            "sourceColumn": "Lineage Key"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    Cube_Salesperson = Source{[Schema=\"Cube\",Item=\"Salesperson\"]}[Data]",
+                "in",
+                "    Cube_Salesperson"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Delivery Date",
+        "columns": [
+          {
+            "name": "Date",
+            "dataType": "dateTime",
+            "sourceColumn": "Date"
+          },
+          {
+            "name": "Day Number",
+            "dataType": "int64",
+            "sourceColumn": "Day Number"
+          },
+          {
+            "name": "Day",
+            "dataType": "string",
+            "sourceColumn": "Day"
+          },
+          {
+            "name": "Month",
+            "dataType": "string",
+            "sourceColumn": "Month"
+          },
+          {
+            "name": "Short Month",
+            "dataType": "string",
+            "sourceColumn": "Short Month"
+          },
+          {
+            "name": "Calendar Month Number",
+            "dataType": "int64",
+            "sourceColumn": "Calendar Month Number"
+          },
+          {
+            "name": "Calendar Month Label",
+            "dataType": "string",
+            "sourceColumn": "Calendar Month Label"
+          },
+          {
+            "name": "Calendar Year",
+            "dataType": "int64",
+            "sourceColumn": "Calendar Year"
+          },
+          {
+            "name": "Calendar Year Label",
+            "dataType": "string",
+            "sourceColumn": "Calendar Year Label"
+          },
+          {
+            "name": "Fiscal Month Number",
+            "dataType": "int64",
+            "sourceColumn": "Fiscal Month Number"
+          },
+          {
+            "name": "Fiscal Month Label",
+            "dataType": "string",
+            "sourceColumn": "Fiscal Month Label"
+          },
+          {
+            "name": "Fiscal Year",
+            "dataType": "int64",
+            "sourceColumn": "Fiscal Year"
+          },
+          {
+            "name": "Fiscal Year Label",
+            "dataType": "string",
+            "sourceColumn": "Fiscal Year Label"
+          },
+          {
+            "name": "ISO Week Number",
+            "dataType": "int64",
+            "sourceColumn": "ISO Week Number"
+          },
+          {
+            "name": "Today",
+            "dataType": "int64",
+            "sourceColumn": "Today"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    Cube_Date = Source{[Schema=\"Cube\",Item=\"Date\"]}[Data]",
+                "in",
+                "    Cube_Date"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "5f18fa8e-4108-4af9-9c69-67f7ba1f25c9",
+        "fromTable": "Invoice Sales",
+        "fromColumn": "Customer Key",
+        "toTable": "Customer",
+        "toColumn": "Customer Key"
+      },
+      {
+        "name": "33e829a8-b848-4e8c-903c-455e17c9721e",
+        "fromTable": "Sales",
+        "fromColumn": "Customer Key",
+        "toTable": "Customer",
+        "toColumn": "Customer Key"
+      },
+      {
+        "name": "f304acff-c033-40a9-81a6-7d8fa0d7d496",
+        "fromTable": "Invoice Sales",
+        "fromColumn": "City Key",
+        "toTable": "City",
+        "toColumn": "City Key"
+      },
+      {
+        "name": "7d70d2b4-472e-46ad-93f6-1cb8f2e31ec2",
+        "fromTable": "Sales",
+        "fromColumn": "City Key",
+        "toTable": "City",
+        "toColumn": "City Key"
+      },
+      {
+        "name": "e7ec5cde-b220-4e83-a3b3-0206c33e507a",
+        "fromTable": "Sales",
+        "fromColumn": "Invoice Date Key",
+        "toTable": "Date",
+        "toColumn": "Date"
+      },
+      {
+        "name": "12db6df8-4ad3-42fb-bbb6-3ef124f807fb",
+        "fromTable": "Invoice Sales",
+        "fromColumn": "Invoice Date Key",
+        "toTable": "Date",
+        "toColumn": "Date"
+      },
+      {
+        "name": "283d5901-585e-4fd1-80c3-ab03a30344dd",
+        "fromTable": "Sales",
+        "fromColumn": "Delivery Date Key",
+        "toTable": "Date",
+        "toColumn": "Date",
+        "isActive": false
+      },
+      {
+        "name": "952b2b8e-a38e-4184-afe6-01584e01c9a9",
+        "fromTable": "Sales",
+        "fromColumn": "Stock Item Key",
+        "toTable": "Item",
+        "toColumn": "Stock Item Key"
+      },
+      {
+        "name": "371f451c-1a50-482a-a15c-14e2b2b9b5af",
+        "fromTable": "Sales",
+        "fromColumn": "WWI Stock Item ID",
+        "toTable": "Item-Current",
+        "toColumn": "WWI Stock Item ID"
+      },
+      {
+        "name": "7f55a0f5-9c43-405a-abc7-2a33bba96e7c",
+        "fromCardinality": "one",
+        "fromTable": "Invoice",
+        "fromColumn": "WWI Invoice ID",
+        "toTable": "Invoice Sales",
+        "toColumn": "WWI Invoice ID",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "f0d48feb-52b8-4af7-86c4-03bcabc822b3",
+        "fromTable": "Sales",
+        "fromColumn": "Salesperson Key",
+        "toTable": "Salesperson",
+        "toColumn": "Employee Key"
+      },
+      {
+        "name": "531eebb3-05a4-464a-8698-7a303eb199de",
+        "fromTable": "Invoice Sales",
+        "fromColumn": "Salesperson Key",
+        "toTable": "Salesperson",
+        "toColumn": "Employee Key"
+      },
+      {
+        "name": "39a5def8-2732-4b84-a99d-58133d372315",
+        "fromTable": "Sales",
+        "fromColumn": "Delivery Date Key",
+        "toTable": "Delivery Date",
+        "toColumn": "Date"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "600"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
