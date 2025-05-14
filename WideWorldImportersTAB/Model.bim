@@ -1209,59 +1209,6 @@
             ]
           }
         ]
-      },
-      {
-        "name": "CalculationGroup 1",
-        "calculationGroup": {
-          "calculationItems": [
-            {
-              "name": "CalculationItem 1"
-            }
-          ]
-        },
-        "columns": [
-          {
-            "name": "CalculationItemColumn 1",
-            "dataType": "string",
-            "sourceColumn": "Name"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "CalculationGroup 1",
-            "mode": "import",
-            "source": {
-              "type": "calculationGroup"
-            }
-          }
-        ]
-      },
-      {
-        "name": "CalculationGroup 2",
-        "calculationGroup": {
-          "precedence": 1,
-          "calculationItems": [
-            {
-              "name": "CalculationItem 1"
-            }
-          ]
-        },
-        "columns": [
-          {
-            "name": "CalculationItemColumn 1",
-            "dataType": "string",
-            "sourceColumn": "Name"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "CalculationGroup 2",
-            "mode": "import",
-            "source": {
-              "type": "calculationGroup"
-            }
-          }
-        ]
       }
     ],
     "relationships": [
