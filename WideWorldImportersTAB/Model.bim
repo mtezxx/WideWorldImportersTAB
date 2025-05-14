@@ -3,6 +3,7 @@
   "compatibilityLevel": 1500,
   "model": {
     "culture": "en-US",
+    "discourageImplicitMeasures": true,
     "dataSources": [
       {
         "type": "structured",
@@ -99,6 +100,63 @@
               ]
             }
           }
+        ],
+        "hierarchies": [
+          {
+            "name": "Geography",
+            "levels": [
+              {
+                "name": "Continent",
+                "ordinal": 0,
+                "column": "Continent"
+              },
+              {
+                "name": "Country",
+                "ordinal": 1,
+                "column": "Country"
+              },
+              {
+                "name": "State Province",
+                "ordinal": 2,
+                "column": "State Province"
+              },
+              {
+                "name": "City",
+                "ordinal": 3,
+                "column": "City"
+              }
+            ]
+          },
+          {
+            "name": "Sales Region",
+            "levels": [
+              {
+                "name": "Region",
+                "ordinal": 0,
+                "column": "Region"
+              },
+              {
+                "name": "Subregion",
+                "ordinal": 1,
+                "column": "Subregion"
+              },
+              {
+                "name": "Sales Territory",
+                "ordinal": 2,
+                "column": "Sales Territory"
+              },
+              {
+                "name": "State Province",
+                "ordinal": 3,
+                "column": "State Province"
+              },
+              {
+                "name": "City",
+                "ordinal": 4,
+                "column": "City"
+              }
+            ]
+          }
         ]
       },
       {
@@ -160,14 +218,43 @@
               ]
             }
           }
+        ],
+        "hierarchies": [
+          {
+            "name": "Customer Hierarchy",
+            "levels": [
+              {
+                "name": "Category",
+                "ordinal": 0,
+                "column": "Category"
+              },
+              {
+                "name": "Buying Group",
+                "ordinal": 1,
+                "column": "Buying Group"
+              },
+              {
+                "name": "Bill To Customer",
+                "ordinal": 2,
+                "column": "Bill To Customer"
+              },
+              {
+                "name": "Customer",
+                "ordinal": 3,
+                "column": "Customer"
+              }
+            ]
+          }
         ]
       },
       {
         "name": "Date",
+        "dataCategory": "Time",
         "columns": [
           {
             "name": "Date",
             "dataType": "dateTime",
+            "isKey": true,
             "sourceColumn": "Date"
           },
           {
@@ -255,6 +342,48 @@
                 "    Cube_Date"
               ]
             }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Calendar",
+            "levels": [
+              {
+                "name": "Calendar Year ",
+                "ordinal": 0,
+                "column": "Calendar Year Label"
+              },
+              {
+                "name": "Calendar Month",
+                "ordinal": 1,
+                "column": "Calendar Month Label"
+              },
+              {
+                "name": "Date",
+                "ordinal": 2,
+                "column": "Date"
+              }
+            ]
+          },
+          {
+            "name": "Fiscal",
+            "levels": [
+              {
+                "name": "Fiscal Year ",
+                "ordinal": 0,
+                "column": "Fiscal Year Label"
+              },
+              {
+                "name": "Fiscal Month",
+                "ordinal": 1,
+                "column": "Fiscal Month Label"
+              },
+              {
+                "name": "Date",
+                "ordinal": 2,
+                "column": "Date"
+              }
+            ]
           }
         ]
       },
@@ -519,6 +648,23 @@
               ]
             }
           }
+        ],
+        "hierarchies": [
+          {
+            "name": "Item Brand",
+            "levels": [
+              {
+                "name": "Brand",
+                "ordinal": 0,
+                "column": "Brand"
+              },
+              {
+                "name": "Stock Item",
+                "ordinal": 1,
+                "column": "Stock Item"
+              }
+            ]
+          }
         ]
       },
       {
@@ -614,6 +760,23 @@
                 "    #\"Cube_Item-Current\""
               ]
             }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Current Item Brand",
+            "levels": [
+              {
+                "name": "Brand",
+                "ordinal": 0,
+                "column": "Brand"
+              },
+              {
+                "name": "Stock Item",
+                "ordinal": 1,
+                "column": "Stock Item"
+              }
+            ]
           }
         ]
       },
@@ -758,18 +921,81 @@
         ],
         "partitions": [
           {
-            "name": "Partition",
-            "dataView": "full",
+            "name": "History Partation",
             "source": {
               "type": "m",
               "expression": [
                 "let",
                 "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
-                "    Cube_Sales = Source{[Schema=\"Cube\",Item=\"Sales\"]}[Data]",
+                "    Cube_Sales = Source{[Schema=\"Cube\",Item=\"Sales\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(Cube_Sales, each [Invoice Date Key] < #date(2015, 1, 1))",
                 "in",
-                "    Cube_Sales"
+                "    #\"Filtered Rows\""
               ]
-            }
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>let",
+                  "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                  "    Cube_Sales = Source{[Schema=\"Cube\",Item=\"Sales\"]}[Data],",
+                  "    #\"Filtered Rows\" = Table.SelectRows(Cube_Sales, each [Invoice Date Key] < #date(2015, 1, 1))",
+                  "in",
+                  "    #\"Filtered Rows\"</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Current Partation",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    Cube_Sales = Source{[Schema=\"Cube\",Item=\"Sales\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(Cube_Sales, each [Invoice Date Key] >= #date(2015, 1, 1))",
+                "in",
+                "    #\"Filtered Rows\""
+              ]
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>let",
+                  "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                  "    Cube_Sales = Source{[Schema=\"Cube\",Item=\"Sales\"]}[Data],",
+                  "    #\"Filtered Rows\" = Table.SelectRows(Cube_Sales, each [Invoice Date Key] >= #date(2015, 1, 1))",
+                  "in",
+                  "    #\"Filtered Rows\"</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          }
+        ],
+        "measures": [
+          {
+            "name": "Total Sales Amount",
+            "expression": "SUM([Total Including Tax])",
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"1033\" DisplayName=\"$ English (United States)\" Symbol=\"$\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Invoice Line Count",
+            "expression": "SUM([Sales Count])",
+            "formatString": "0,0"
+          },
+          {
+            "name": "Distinct Count of WWI Invoice ID",
+            "expression": "DISTINCTCOUNT([WWI Invoice ID])",
+            "formatString": "0,0"
           }
         ]
       },
@@ -846,10 +1072,12 @@
       },
       {
         "name": "Delivery Date",
+        "dataCategory": "Time",
         "columns": [
           {
             "name": "Date",
             "dataType": "dateTime",
+            "isKey": true,
             "sourceColumn": "Date"
           },
           {
@@ -936,6 +1164,101 @@
                 "in",
                 "    Cube_Date"
               ]
+            }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Calendar",
+            "levels": [
+              {
+                "name": "Calendar Year",
+                "ordinal": 0,
+                "column": "Calendar Year Label"
+              },
+              {
+                "name": "Calendar Month",
+                "ordinal": 1,
+                "column": "Calendar Month Label"
+              },
+              {
+                "name": "Date",
+                "ordinal": 2,
+                "column": "Date"
+              }
+            ]
+          },
+          {
+            "name": "Fiscal",
+            "levels": [
+              {
+                "name": "Fiscal Year",
+                "ordinal": 0,
+                "column": "Fiscal Year Label"
+              },
+              {
+                "name": "Fiscal Month",
+                "ordinal": 1,
+                "column": "Fiscal Month Label"
+              },
+              {
+                "name": "Date",
+                "ordinal": 2,
+                "column": "Date"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CalculationGroup 1",
+        "calculationGroup": {
+          "calculationItems": [
+            {
+              "name": "CalculationItem 1"
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "CalculationItemColumn 1",
+            "dataType": "string",
+            "sourceColumn": "Name"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculationGroup 1",
+            "mode": "import",
+            "source": {
+              "type": "calculationGroup"
+            }
+          }
+        ]
+      },
+      {
+        "name": "CalculationGroup 2",
+        "calculationGroup": {
+          "precedence": 1,
+          "calculationItems": [
+            {
+              "name": "CalculationItem 1"
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "CalculationItemColumn 1",
+            "dataType": "string",
+            "sourceColumn": "Name"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculationGroup 2",
+            "mode": "import",
+            "source": {
+              "type": "calculationGroup"
             }
           }
         ]
