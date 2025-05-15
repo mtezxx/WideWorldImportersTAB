@@ -510,6 +510,19 @@
             "name": "Sales Count",
             "dataType": "int64",
             "sourceColumn": "Sales Count"
+          },
+          {
+            "name": "Invoice Profit - Copy",
+            "dataType": "double",
+            "sourceColumn": "Invoice Profit - Copy"
+          },
+          {
+            "type": "calculated",
+            "name": "Missing Profit",
+            "dataType": "boolean",
+            "isDataTypeInferred": true,
+            "expression": "ISBLANK('Invoice Sales'[Invoice Profit - Copy])",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\""
           }
         ],
         "partitions": [
@@ -521,11 +534,53 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
-                "    #\"Cube_Invoice Sales\" = Source{[Schema=\"Cube\",Item=\"Invoice Sales\"]}[Data]",
+                "    #\"Cube_Invoice Sales\" = Source{[Schema=\"Cube\",Item=\"Invoice Sales\"]}[Data],",
+                "    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Cube_Invoice Sales\", \"Invoice Profit\", \"Invoice Profit - Copy\"),",
+                "    #\"Replaced Value\" = Table.ReplaceValue(#\"Duplicated Column\",40,null,Replacer.ReplaceValue,{\"Invoice Profit - Copy\"})",
                 "in",
-                "    #\"Cube_Invoice Sales\""
+                "    #\"Replaced Value\""
               ]
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Average Invoice Profit",
+            "expression": "AVERAGE('Invoice Sales'[Invoice Profit])",
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"1033\" DisplayName=\"$ English (United States)\" Symbol=\"$\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Average Indiana Profit",
+            "expression": "AVERAGEX('Invoice Sales',IF(RELATED(City[State Province])=\"Indiana\",'Invoice Sales'[Invoice Profit],\"\"))",
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"1033\" DisplayName=\"$ English (United States)\" Symbol=\"$\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Count Inv Profits",
+            "expression": "COUNT('Invoice Sales'[Invoice Profit - Copy])"
+          },
+          {
+            "name": "CountA Inv Profits",
+            "expression": "COUNTA('Invoice Sales'[Invoice Profit - Copy])"
+          },
+          {
+            "name": "Total Profit Count",
+            "expression": "COUNTA('Invoice Sales'[Missing Profit])"
+          },
+          {
+            "name": "Invoices Missing Profits",
+            "expression": "[Total Profit Count]-[Count Inv Profits]"
           }
         ]
       },
@@ -917,6 +972,13 @@
             "name": "Lineage Key",
             "dataType": "int64",
             "sourceColumn": "Lineage Key"
+          },
+          {
+            "type": "calculated",
+            "name": "Red Items",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "expression": " IF(RELATED('Item'[Color]) = \"Red\", Sales[Quantity], 0)"
           }
         ],
         "partitions": [
@@ -995,6 +1057,46 @@
           {
             "name": "Distinct Count of WWI Invoice ID",
             "expression": "DISTINCTCOUNT([WWI Invoice ID])",
+            "formatString": "0,0"
+          },
+          {
+            "name": "Total Red Items",
+            "expression": " SUM(Sales[Red Items])",
+            "formatString": "0,0"
+          },
+          {
+            "name": "Total Blue Items",
+            "expression": " SUMX(Sales, IF(RELATED('Item'[Color]) = \"Blue\", Sales[Quantity], 0))",
+            "formatString": "0,0"
+          },
+          {
+            "name": "Total Black Items",
+            "expression": " SUMX(Sales, IF(RELATED('Item'[Color]) = \"black\", Sales[Quantity], 0))",
+            "formatString": "0,0"
+          },
+          {
+            "name": "Total Gray Items",
+            "expression": " SUMX(Sales, IF(RELATED('Item'[Color]) = \"Gray\", Sales[Quantity], 0))",
+            "formatString": "0,0"
+          },
+          {
+            "name": "Total Light brown Items",
+            "expression": " SUMX(Sales, IF(RELATED('Item'[Color]) = \"light brown\", Sales[Quantity], 0))",
+            "formatString": "0,0"
+          },
+          {
+            "name": "Total Steel gray Items",
+            "expression": " SUMX(Sales, IF(RELATED('Item'[Color]) = \"steel gray\", Sales[Quantity], 0))",
+            "formatString": "0,0"
+          },
+          {
+            "name": "Total White Items",
+            "expression": " SUMX(Sales, IF(RELATED('Item'[Color]) = \"white\", Sales[Quantity], 0))",
+            "formatString": "0,0"
+          },
+          {
+            "name": "Total Yellow Items",
+            "expression": " SUMX(Sales, IF(RELATED('Item'[Color]) = \"yellow\", Sales[Quantity], 0))",
             "formatString": "0,0"
           }
         ]
