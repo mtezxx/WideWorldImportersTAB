@@ -581,6 +581,69 @@
           {
             "name": "Invoices Missing Profits",
             "expression": "[Total Profit Count]-[Count Inv Profits]"
+          },
+          {
+            "name": "% of All Invoices",
+            "expression": [
+              "",
+              "COUNT(Invoice[WWI Invoice ID]) /",
+              "CALCULATE(",
+              "    COUNT(Invoice[WWI Invoice ID]),",
+              "    ALL('Invoice Sales')",
+              ")"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%"
+          },
+          {
+            "name": "Invoice Sales YTD",
+            "expression": [
+              "",
+              "TOTALYTD(",
+              "    SUM('Invoice Sales'[Invoice Total Including Tax]),",
+              "    'Date'[Date]",
+              ")"
+            ],
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"1033\" DisplayName=\"$ English (United States)\" Symbol=\"$\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Invoice Sales Next Year",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "    SUM('Invoice Sales'[Invoice Total Including Tax]),",
+              "    NEXTYEAR('Date'[Date])",
+              ")"
+            ],
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"1033\" DisplayName=\"$ English (United States)\" Symbol=\"$\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Invoice Sales Previous Year",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "    SUM('Invoice Sales'[Invoice Total Including Tax]),",
+              "    PREVIOUSYEAR('Date'[Date])",
+              ")"
+            ],
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"1033\" DisplayName=\"$ English (United States)\" Symbol=\"$\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           }
         ]
       },
@@ -1098,6 +1161,98 @@
             "name": "Total Yellow Items",
             "expression": " SUMX(Sales, IF(RELATED('Item'[Color]) = \"yellow\", Sales[Quantity], 0))",
             "formatString": "0,0"
+          },
+          {
+            "name": "% of Red Items",
+            "expression": [
+              "[Total Red Items] / ",
+              "CALCULATE(SUM(Sales[Quantity]),FILTER('Sales' ,RELATED('Item'[Color])<>\"N/A\"))"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%"
+          },
+          {
+            "name": "% of Blue Items",
+            "expression": [
+              "",
+              "[Total Blue Items] /",
+              "CALCULATE(",
+              "    SUM(Sales[Quantity]),",
+              "    FILTER(Sales, RELATED('Item'[Color]) <> \"N/A\")",
+              ")"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%"
+          },
+          {
+            "name": "% of Black Items",
+            "expression": [
+              "",
+              "[Total Black Items] /",
+              "CALCULATE(",
+              "    SUM(Sales[Quantity]),",
+              "    FILTER(Sales, RELATED('Item'[Color]) <> \"N/A\")",
+              ")"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%"
+          },
+          {
+            "name": "% of White Items",
+            "expression": [
+              "",
+              "[Total White Items] /",
+              "CALCULATE(",
+              "    SUM(Sales[Quantity]),",
+              "    FILTER(Sales, RELATED('Item'[Color]) <> \"N/A\")",
+              ")"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%"
+          },
+          {
+            "name": "% of Gray Items",
+            "expression": [
+              "",
+              "[Total Gray Items] /",
+              "CALCULATE(",
+              "    SUM(Sales[Quantity]),",
+              "    FILTER(Sales, RELATED('Item'[Color]) <> \"N/A\")",
+              ")"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%"
+          },
+          {
+            "name": "% of Light Brown Items",
+            "expression": [
+              "",
+              "[Total Light Brown Items] /",
+              "CALCULATE(",
+              "    SUM(Sales[Quantity]),",
+              "    FILTER(Sales, RELATED('Item'[Color]) <> \"N/A\")",
+              ")"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%"
+          },
+          {
+            "name": "% of Yellow Items",
+            "expression": [
+              "",
+              "[Total Yellow Items] /",
+              "CALCULATE(",
+              "    SUM(Sales[Quantity]),",
+              "    FILTER(Sales, RELATED('Item'[Color]) <> \"N/A\")",
+              ")"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%"
+          },
+          {
+            "name": "% of Steel Gray Items",
+            "expression": [
+              "",
+              "[Total Steel Gray Items] /",
+              "CALCULATE(",
+              "    SUM(Sales[Quantity]),",
+              "    FILTER(Sales, RELATED('Item'[Color]) <> \"N/A\")",
+              ")"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%"
           }
         ]
       },
@@ -1309,6 +1464,318 @@
                 "column": "Date"
               }
             ]
+          }
+        ]
+      },
+      {
+        "name": "Tailspin Toys Sales",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "WWI Invoice ID",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[WWI Invoice ID]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "City Key",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[City Key]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "WWI City ID",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[WWI City ID]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Customer Key",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Customer Key]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "WWI Customer ID",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[WWI Customer ID]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Bill To Customer Key",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Bill To Customer Key]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "WWI Bill To Customer ID",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[WWI Bill To Customer ID]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Invoice Date Key",
+            "dataType": "dateTime",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Invoice Date Key]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Salesperson Key",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Salesperson Key]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "WWI Employee ID",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[WWI Employee ID]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Invoice Total Excluding Tax",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Invoice Total Excluding Tax]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Invoice Tax Amount",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Invoice Tax Amount]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Invoice Profit",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Invoice Profit]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Invoice Total Including Tax",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Invoice Total Including Tax]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Invoice Total Dry Items",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Invoice Total Dry Items]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Invoice Total Chiller Items",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Invoice Total Chiller Items]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Invoice Count",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Invoice Count]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Sales Count",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Sales Count]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Invoice Profit - Copy",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Invoice Profit - Copy]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Missing Profit",
+            "dataType": "boolean",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Invoice Sales[Missing Profit]",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\""
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "FILTER('Invoice Sales',RELATED(Customer[Buying Group])=\"Tailspin Toys\")"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Item Brand Color",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Brand",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Item[Brand]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Color",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Item[Color]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Item Brand \nColor Breakdown",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Item Brand \nColor Breakdown]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "SUMMARIZECOLUMNS('Item'[Brand],'Item'[Color],\"Item Brand ",
+                "Color Breakdown\", COUNT('Item'[Stock Item Key]))"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Brand Color Sales by Buying Group",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Buying Group",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Customer[Buying Group]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Brand",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Item[Brand]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Color",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Item[Color]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Item Brand Color Breakdown",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Item Brand Color Breakdown]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "GENERATE(SUMMARIZE('Customer',Customer[Buying Group]),    SUMMARIZE('Item', 'Item'[Brand],'Item'[Color]",
+                " ,\"Item Brand Color Breakdown\", SUMX(RELATEDTABLE(Sales), ",
+                "Sales[Quantity]))",
+                " )"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Annual Calcs",
+        "calculationGroup": {
+          "precedence": 25,
+          "calculationItems": [
+            {
+              "name": "YTD",
+              "expression": "CALCULATE(SELECTEDMEASURE(),DATESYTD('Date'[Date]))",
+              "ordinal": 1
+            },
+            {
+              "name": "Previous Year",
+              "expression": "CALCULATE(SELECTEDMEASURE(),PREVIOUSYEAR('Date'[Date]))",
+              "ordinal": 3
+            },
+            {
+              "name": "Next Year",
+              "expression": "CALCULATE(SELECTEDMEASURE(),NEXTYEAR('Date'[Date]))",
+              "ordinal": 2
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "Annual Metric",
+            "dataType": "string",
+            "sourceColumn": "Name",
+            "sortByColumn": "Sort Order"
+          },
+          {
+            "name": "Sort Order",
+            "dataType": "int64",
+            "sourceColumn": "Ordinal"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculationGroup 1",
+            "mode": "import",
+            "source": {
+              "type": "calculationGroup"
+            }
           }
         ]
       }
