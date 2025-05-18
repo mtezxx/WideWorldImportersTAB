@@ -87,18 +87,59 @@
         ],
         "partitions": [
           {
-            "name": "Partition",
-            "dataView": "full",
+            "name": "City Europe",
             "source": {
               "type": "m",
               "expression": [
                 "let",
                 "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
-                "    Cube_City = Source{[Schema=\"Cube\",Item=\"City\"]}[Data]",
+                "    Cube_City = Source{[Schema=\"Cube\", Item=\"City\"]}[Data],",
+                "    FilteredRows = Table.SelectRows(Cube_City, each [Continent] = \"Europe\")",
                 "in",
-                "    Cube_City"
+                "    FilteredRows"
               ]
-            }
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>let",
+                  "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                  "    Cube_City = Source{[Schema=\"Cube\", Item=\"City\"]}[Data],",
+                  "    FilteredRows = Table.SelectRows(Cube_City, each [Continent] = \"Europe\")",
+                  "in",
+                  "    FilteredRows</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "City Non-Europe",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                "    Cube_City = Source{[Schema=\"Cube\", Item=\"City\"]}[Data],",
+                "    FilteredRows = Table.SelectRows(Cube_City, each [Continent] <> \"Europe\")",
+                "in",
+                "    FilteredRows"
+              ]
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>let",
+                  "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                  "    Cube_City = Source{[Schema=\"Cube\", Item=\"City\"]}[Data],",
+                  "    FilteredRows = Table.SelectRows(Cube_City, each [Continent] <> \"Europe\")",
+                  "in",
+                  "    FilteredRows</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
           }
         ],
         "hierarchies": [
@@ -527,8 +568,7 @@
         ],
         "partitions": [
           {
-            "name": "Partition",
-            "dataView": "full",
+            "name": "Partation",
             "source": {
               "type": "m",
               "expression": [
@@ -536,11 +576,27 @@
                 "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
                 "    #\"Cube_Invoice Sales\" = Source{[Schema=\"Cube\",Item=\"Invoice Sales\"]}[Data],",
                 "    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Cube_Invoice Sales\", \"Invoice Profit\", \"Invoice Profit - Copy\"),",
-                "    #\"Replaced Value\" = Table.ReplaceValue(#\"Duplicated Column\",40,null,Replacer.ReplaceValue,{\"Invoice Profit - Copy\"})",
+                "    #\"Replaced Value\" = Table.ReplaceValue(#\"Duplicated Column\",40,null,Replacer.ReplaceValue,{\"Invoice Profit - Copy\"}),",
+                "    #\"Replaced Value1\" = Table.ReplaceValue(#\"Replaced Value\",40,null,Replacer.ReplaceValue,{\"Invoice Profit - Copy\"})",
                 "in",
-                "    #\"Replaced Value\""
+                "    #\"Replaced Value1\""
               ]
-            }
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>let",
+                  "    Source = #\"SQL/LENOVOMATEJ\\DOWSQL2022;WideWorldImportersDW\",",
+                  "    #\"Cube_Invoice Sales\" = Source{[Schema=\"Cube\",Item=\"Invoice Sales\"]}[Data],",
+                  "    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Cube_Invoice Sales\", \"Invoice Profit\", \"Invoice Profit - Copy\"),",
+                  "    #\"Replaced Value\" = Table.ReplaceValue(#\"Duplicated Column\",40,null,Replacer.ReplaceValue,{\"Invoice Profit - Copy\"}),",
+                  "    #\"Replaced Value1\" = Table.ReplaceValue(#\"Replaced Value\",40,null,Replacer.ReplaceValue,{\"Invoice Profit - Copy\"})",
+                  "in",
+                  "    #\"Replaced Value1\"</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
           }
         ],
         "measures": [
@@ -635,6 +691,23 @@
               "CALCULATE(",
               "    SUM('Invoice Sales'[Invoice Total Including Tax]),",
               "    PREVIOUSYEAR('Date'[Date])",
+              ")"
+            ],
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"1033\" DisplayName=\"$ English (United States)\" Symbol=\"$\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Invoice Sales QTD",
+            "expression": [
+              "",
+              "TOTALQTD(",
+              "    SUM('Invoice Sales'[Invoice Total Including Tax]),",
+              "    'Date'[Date]",
               ")"
             ],
             "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
@@ -1042,6 +1115,13 @@
             "dataType": "int64",
             "isDataTypeInferred": true,
             "expression": " IF(RELATED('Item'[Color]) = \"Red\", Sales[Quantity], 0)"
+          },
+          {
+            "type": "calculated",
+            "name": "Profit per Unit",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": " DIVIDE(Sales[Profit], Sales[Quantity])"
           }
         ],
         "partitions": [
@@ -1180,7 +1260,51 @@
               "    FILTER(Sales, RELATED('Item'[Color]) <> \"N/A\")",
               ")"
             ],
-            "formatString": "0.00%;-0.00%;0.00%"
+            "formatString": "0.00%;-0.00%;0.00%",
+            "kpi": {
+              "targetExpression": "0.3",
+              "targetFormatString": "0.00%;-0.00%;0.00%",
+              "statusGraphic": "Three Flags Colored",
+              "statusExpression": [
+                "var x='Sales'[% of Blue Items] return",
+                "            if(ISBLANK(x),BLANK(),",
+                "                    If(x<0.15,-1,",
+                "\t                If(x<0.25,0,1)",
+                "                )",
+                "            )",
+                "            "
+              ],
+              "annotations": [
+                {
+                  "name": "GoalType",
+                  "value": "StaticValue"
+                },
+                {
+                  "name": "KpiStatusType",
+                  "value": "Linear"
+                },
+                {
+                  "name": "KpiThresholdType",
+                  "value": "Absolute"
+                },
+                {
+                  "name": "KpiThresholdOrdering",
+                  "value": "Ascending"
+                },
+                {
+                  "name": "KpiThresholdCount",
+                  "value": "2"
+                },
+                {
+                  "name": "KpiThreshold_0",
+                  "value": "0.15"
+                },
+                {
+                  "name": "KpiThreshold_1",
+                  "value": "0.25"
+                }
+              ]
+            }
           },
           {
             "name": "% of Black Items",
@@ -1253,6 +1377,66 @@
               ")"
             ],
             "formatString": "0.00%;-0.00%;0.00%"
+          },
+          {
+            "name": "Profit Margin",
+            "expression": " DIVIDE(SUM(Sales[Profit]), SUM(Sales[Total Including Tax]))",
+            "formatString": "0.00%;-0.00%;0.00%",
+            "kpi": {
+              "targetExpression": "0.2",
+              "targetFormatString": "0.00%;-0.00%;0.00%",
+              "statusGraphic": "Traffic Light - Single",
+              "statusExpression": [
+                "var x='Sales'[Profit Margin] return",
+                "            if(ISBLANK(x),BLANK(),",
+                "                    If(x<0.15,-1,",
+                "\t                If(x<0.2,0,1)",
+                "                )",
+                "            )",
+                "            "
+              ],
+              "annotations": [
+                {
+                  "name": "GoalType",
+                  "value": "StaticValue"
+                },
+                {
+                  "name": "KpiStatusType",
+                  "value": "Linear"
+                },
+                {
+                  "name": "KpiThresholdType",
+                  "value": "Absolute"
+                },
+                {
+                  "name": "KpiThresholdOrdering",
+                  "value": "Ascending"
+                },
+                {
+                  "name": "KpiThresholdCount",
+                  "value": "2"
+                },
+                {
+                  "name": "KpiThreshold_0",
+                  "value": "0.15"
+                },
+                {
+                  "name": "KpiThreshold_1",
+                  "value": "0.2"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Average Profit per Unit",
+            "expression": " AVERAGE(Sales[Profit per Unit])",
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"1033\" DisplayName=\"$ English (United States)\" Symbol=\"$\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           }
         ]
       },
@@ -1759,6 +1943,112 @@
         "columns": [
           {
             "name": "Annual Metric",
+            "dataType": "string",
+            "sourceColumn": "Name",
+            "sortByColumn": "Sort Order"
+          },
+          {
+            "name": "Sort Order",
+            "dataType": "int64",
+            "sourceColumn": "Ordinal"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculationGroup 1",
+            "mode": "import",
+            "source": {
+              "type": "calculationGroup"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Top 10 Customers",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Customer",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Customer[Customer]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Total Sales",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Total Sales]",
+            "formatString": "\\$#,0.00;(\\$#,0.00);\\$#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"1033\" DisplayName=\"$ English (United States)\" Symbol=\"$\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "",
+                "TOPN(",
+                "    10,",
+                "    FILTER(",
+                "        SUMMARIZE(",
+                "            Sales,",
+                "            Customer[Customer],",
+                "            \"Total Sales\", SUM(Sales[Total Including Tax])",
+                "        ),",
+                "        [Customer] <> \"Unknown\"",
+                "    ),",
+                "    [Total Sales],",
+                "    DESC",
+                ")"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Time Aggregations",
+        "calculationGroup": {
+          "precedence": 26,
+          "calculationItems": [
+            {
+              "name": "YTD",
+              "expression": [
+                "CALCULATE (TOTALYTD(SELECTEDMEASURE(), 'Date'[Date]))",
+                ""
+              ],
+              "ordinal": 3
+            },
+            {
+              "name": "QTD",
+              "expression": [
+                "CALCULATE (TOTALQTD(SELECTEDMEASURE(), 'Date'[Date]))",
+                ""
+              ],
+              "ordinal": 2
+            },
+            {
+              "name": "MTD",
+              "expression": [
+                "CALCULATE (TOTALMTD(SELECTEDMEASURE(), 'Date'[Date]))",
+                ""
+              ],
+              "ordinal": 1
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "Time Aggregation",
             "dataType": "string",
             "sourceColumn": "Name",
             "sortByColumn": "Sort Order"
